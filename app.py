@@ -9,28 +9,36 @@ st.markdown("_Real-time signals for top stocks & crypto pairs._")
 
 tickers = [
     "AAPL", "MSFT", "GOOG", "AMZN", "TSLA", "NVDA", "META", "NFLX", "AMD", "INTC",
-    "BA", "BABA", "DIS", "UBER", "LYFT", "SHOP", "SQ", "PYPL", "PLTR", "SNOW",
-    "CRM", "ORCL", "QCOM", "AVGO", "TXN", "MRNA", "JNJ", "PFE", "XOM", "CVX",
-    "KO", "PEP", "MCD", "WMT", "HD", "COST", "T", "VZ", "NKE", "SBUX", "WBA",
-    "JPM", "BAC", "WFC", "MS", "MA", "AXP", "BTC-USD", "ETH-USD", "SOL-USD", "ADA-USD"
+    "BTC-USD", "ETH-USD", "SOL-USD", "ADA-USD"
 ]
 
 ticker = st.selectbox("Select a ticker:", tickers)
 
 @st.cache_data
-def get_signal(ticker):
-    df = yf.download(ticker, period="3mo", interval="1d")
+def fetch_data(ticker):
+    df = yf.download(ticker, period="6mo", interval="1d")
     if df.empty:
         return None
     df.ta.rsi(length=14, append=True)
     return df
 
 if ticker:
-    with st.spinner("Analyzing data..."):
-        df = get_signal(ticker)
+    with st.spinner("Fetching and analyzing data..."):
+        df = fetch_data(ticker)
 
-        if df is None or "RSI_14" not in df.columns:
-            st.error(f"Unable to compute RSI for {ticker}. Data may be missing or incomplete.")
+        if df is None:
+            st.error("No data retrieved. Please try a different ticker.")
+        elif "RSI_14" not in df.columns:
+            st.error("RSI calculation failed. Try again or check your data.")
         else:
-            st.subheader(f"RSI Signal for {ticker}")
+            st.subheader(f"RSI Indicator for {ticker}")
             st.line_chart(df["RSI_14"].dropna())
+            latest_rsi = df["RSI_14"].dropna().iloc[-1]
+            st.metric("Latest RSI", round(latest_rsi, 2))
+            
+            if latest_rsi < 30:
+                st.success("Buy signal: RSI is below 30 (oversold)")
+            elif latest_rsi > 70:
+                st.error("Sell signal: RSI is above 70 (overbought)")
+            else:
+                st.info("Hold: RSI is in the neutral range (30-70)")
