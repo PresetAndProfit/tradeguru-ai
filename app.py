@@ -7,9 +7,7 @@ st.set_page_config(page_title="TradeGuru AI", layout="wide")
 st.title("📈 TradeGuru AI – Smart Buy/Sell Signals")
 st.markdown("_Real-time signals for 50+ stocks & crypto pairs_")
 
-tickers = [
-    "AAPL", "TSLA", "AMZN", "BTC-USD", "ETH-USD"
-]
+tickers = ["AAPL"]
 
 
 @st.cache_data
