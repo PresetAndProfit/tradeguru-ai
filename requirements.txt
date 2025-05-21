@@ -2,4 +2,4 @@ streamlit==1.33.0
 yfinance==0.2.33
 pandas==1.5.3
 pandas_ta==0.3.14b0
-setuptools
+setuptools==67.8.0
