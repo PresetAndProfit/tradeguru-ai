@@ -8,13 +8,9 @@ st.title("📈 TradeGuru AI – Smart Buy/Sell Signals")
 st.markdown("_Real-time signals for 50+ stocks & crypto pairs_")
 
 tickers = [
-    "AAPL", "MSFT", "GOOG", "AMZN", "TSLA", "NVDA", "META", "NFLX", "AMD", "INTC",
-    "BA", "BABA", "DIS", "UBER", "LYFT", "SHOP", "SQ", "PYPL", "PLTR", "SNOW",
-    "CRM", "ORCL", "QCOM", "AVGO", "TXN", "MRNA", "JNJ", "PFE", "CVX", "XOM",
-    "KO", "PEP", "MCD", "WMT", "HD", "COST", "TGT", "NKE", "SBUX", "WBA",
-    "GS", "JPM", "BAC", "WFC", "V", "MA", "AXP", "T", "VZ", "TMUS",
-    "BTC-USD", "ETH-USD", "SOL-USD", "ADA-USD"
+    "AAPL", "TSLA", "AMZN", "BTC-USD", "ETH-USD"
 ]
+
 
 @st.cache_data
 def get_signal(ticker):
