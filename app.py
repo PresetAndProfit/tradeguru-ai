@@ -1,11 +1,9 @@
-
 import streamlit as st
 import yfinance as yf
 import pandas as pd
 import pandas_ta as ta
 
 st.set_page_config(page_title="TradeGuru AI", layout="wide")
-
 st.title("📈 TradeGuru AI – Smart Buy/Sell Signals")
 st.markdown("_Real-time signals for 50+ stocks & crypto pairs_")
 
