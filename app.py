@@ -15,24 +15,22 @@ tickers = [
     "JPM", "BAC", "WFC", "MS", "MA", "AXP", "BTC-USD", "ETH-USD", "SOL-USD", "ADA-USD"
 ]
 
-st.selectbox("Select a ticker:", tickers, key="selected_ticker")
+ticker = st.selectbox("Select a ticker:", tickers)
 
 @st.cache_data
 def get_signal(ticker):
     df = yf.download(ticker, period="3mo", interval="1d")
+    if df.empty:
+        return None
     df.ta.rsi(length=14, append=True)
     return df
 
-if st.session_state.selected_ticker:
+if ticker:
     with st.spinner("Analyzing data..."):
-        try:
-            df = get_signal(st.session_state.selected_ticker)
+        df = get_signal(ticker)
 
-            if "RSI_14" in df.columns:
-                st.subheader(f"RSI Signal for {st.session_state.selected_ticker}")
-                st.line_chart(df["RSI_14"].dropna())
-            else:
-                st.error("RSI_14 not found in the data. The ticker may be invalid or missing data.")
-
-        except Exception as e:
-            st.error(f"An error occurred: {e}")
+        if df is None or "RSI_14" not in df.columns:
+            st.error(f"Unable to compute RSI for {ticker}. Data may be missing or incomplete.")
+        else:
+            st.subheader(f"RSI Signal for {ticker}")
+            st.line_chart(df["RSI_14"].dropna())
